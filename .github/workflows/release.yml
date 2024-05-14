@@ -7,17 +7,29 @@ jobs:
   post-release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          fetch-depth: 0
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Set up gradle cache
+        uses: gradle/gradle-build-action@v2
+
       - name: Configure git
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
-      - name: Release setup
-        run: |
-          chmod +x .github/scripts/release.sh
+
       - name: Release Plugins
+        env:
+          OSS_PASSWORD=${{ OSS_PASSWORD }}
+          OSS_STAGING_PROFILE_ID=${{ OSS_STAGING_PROFILE_ID }}
+          OSS_SIGNING_KEY_ID=${{ OSS_SIGNING_KEY_ID }}
+          OSS_SIGNING_PASSWORD=${{ OSS_SIGNING_PASSWORD }}
+          OSS_SIGNING_KEY=${{ OSS_SIGNING_KEY }}
         run: |
           .github/scripts/release.sh

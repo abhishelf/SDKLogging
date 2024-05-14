@@ -12,7 +12,6 @@ jobs:
       OSS_SIGNING_KEY_ID: ${{ secrets.OSS_SIGNING_KEY_ID }}
       OSS_SIGNING_PASSWORD: ${{ secrets.OSS_SIGNING_PASSWORD }}
       OSS_SIGNING_KEY: ${{ secrets.OSS_SIGNING_KEY }}
-      ORG_GRADLE_PROJECT_OSS_SIGNING_KEY: ${{ secrets.OSS_SIGNING_KEY }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

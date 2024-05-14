@@ -28,7 +28,6 @@ val scmDevConnection = project.findProperty("POM_SCM_DEV_CONNECTION") as String
 
 val repositoryUsername = System.getenv("OSS_USERNAME")
 val repositoryPassword = System.getenv("OSS_PASSWORD")
-val configuredStagingProfileId = System.getenv("OSS_STAGING_PROFILE_ID")
 
 publishing {
     publications {

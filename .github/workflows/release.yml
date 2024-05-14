@@ -5,7 +5,7 @@ on:
 
 jobs:
   release:
-    environment: publishing_config
+    environment: publishing_gradle_config
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

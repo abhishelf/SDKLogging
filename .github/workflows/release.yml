@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  post-release:
+  release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,4 +28,5 @@ jobs:
           OSS_SIGNING_PASSWORD: ${{ secrets.OSS_SIGNING_PASSWORD }}
           OSS_SIGNING_KEY: ${{ secrets.OSS_SIGNING_KEY }}
         run: |
+          chmod +x .github/scripts/release.sh
           .github/scripts/release.sh

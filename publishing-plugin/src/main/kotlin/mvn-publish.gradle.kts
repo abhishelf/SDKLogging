@@ -89,6 +89,3 @@ signing {
     )
     sign(publishing.publications["release"])
 }
-
-System.out.println(System.getenv("OSS_SIGNING_KEY"))
-System.out.println(System.getenv("OSS_PASSWORD"))

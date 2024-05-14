@@ -6,12 +6,6 @@ on:
 jobs:
   release:
     environment: publishing_config
-    env:
-      OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
-      OSS_STAGING_PROFILE_ID: ${{ secrets.OSS_STAGING_PROFILE_ID }}
-      OSS_SIGNING_KEY_ID: ${{ secrets.OSS_SIGNING_KEY_ID }}
-      OSS_SIGNING_PASSWORD: ${{ secrets.OSS_SIGNING_PASSWORD }}
-      OSS_SIGNING_KEY: ${{ secrets.OSS_SIGNING_KEY }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,6 +22,12 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
       - name: Release Plugins
+        env:
+          OSS_PASSWORD: ${{ secrets.OSS_PASSWORD }}
+          OSS_STAGING_PROFILE_ID: ${{ secrets.OSS_STAGING_PROFILE_ID }}
+          OSS_SIGNING_KEY_ID: ${{ secrets.OSS_SIGNING_KEY_ID }}
+          OSS_SIGNING_PASSWORD: ${{ secrets.OSS_SIGNING_PASSWORD }}
+          OSS_SIGNING_KEY: ${{ secrets.OSS_SIGNING_KEY }}
         run: |
           chmod +x .github/scripts/release.sh
           .github/scripts/release.sh

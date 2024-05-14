@@ -1,0 +1,23 @@
+name: Release Plugins
+
+on:
+  workflow_dispatch:
+
+jobs:
+  post-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Release setup
+        run: |
+          chmod +x .github/scripts/release.sh
+      - name: Release Plugins
+        run: |
+          .github/scripts/release.sh

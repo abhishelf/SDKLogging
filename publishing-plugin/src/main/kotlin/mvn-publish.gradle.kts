@@ -89,3 +89,5 @@ signing {
     )
     sign(publishing.publications["release"])
 }
+
+System.out.println(repositoryUsername)

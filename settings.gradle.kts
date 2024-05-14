@@ -27,5 +27,3 @@ fun nameBuildScriptsAfterProjectNames(projects: Set<ProjectDescriptor>) {
         nameBuildScriptsAfterProjectNames(project.children)
     }
 }
-
-includeBuild("publishing-plugin")

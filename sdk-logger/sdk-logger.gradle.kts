@@ -2,7 +2,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    id("mvn-publish")
+    id("com.vanniktech.maven.publish") version "0.28.0"
 }
 
 android {

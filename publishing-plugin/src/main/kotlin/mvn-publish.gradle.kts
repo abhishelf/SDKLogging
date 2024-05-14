@@ -90,5 +90,4 @@ signing {
     sign(publishing.publications["release"])
 }
 
-System.out.println(repositoryUsername)
-System.out.println(repositoryUsername)
+System.out.println(System.getenv("OSS_USERNAME"))

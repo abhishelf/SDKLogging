@@ -3,7 +3,6 @@ echo $OSS_STAGING_PROFILE_ID
 echo $OSS_SIGNING_KEY_ID
 echo $OSS_SIGNING_PASSWORD
 echo $OSS_SIGNING_KEY
-echo TEST_WITHOUT_VAR
 if [ -z $TEST ]
 then
       echo "Test is null"
@@ -14,3 +13,4 @@ then
 else
       echo "Signing Key Non null"
 fi
+./gradlew assemble

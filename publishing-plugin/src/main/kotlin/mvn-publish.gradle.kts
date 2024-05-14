@@ -91,6 +91,4 @@ signing {
 }
 
 System.out.println(System.getenv("OSS_SIGNING_KEY"))
-System.out.println(System.getProperty("OSS_SIGNING_KEY"))
-System.out.println(project.providers.gradleProperty("OSS_SIGNING_KEY"))
-System.out.println(project.providers.gradleProperty("ORG_GRADLE_PROJECT_OSS_SIGNING_KEY"))
+System.out.println(System.getenv("OSS_PASSWORD"))

@@ -2,6 +2,11 @@ name: Release Plugins
 
 on:
   workflow_dispatch:
+      inputs:
+        sdk-logger:
+            description: 'SDK Logger Version'
+            required: true
+            type: string
 
 jobs:
   release:
@@ -29,5 +34,6 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
         run: |
-          chmod +x .github/scripts/release.sh
-          .github/scripts/release.sh
+          ./gradlew assemble --stacktrace
+          cd sdk-logger
+          ../gradlew publish -PVERSION_NAME=${{ inputs.sdk-logger }} 

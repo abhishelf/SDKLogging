@@ -23,11 +23,11 @@ val developerName = project.findProperty("POM_DEVELOPER_NAME") as String
 val scmConnection = project.findProperty("POM_SCM_CONNECTION") as String
 val scmDevConnection = project.findProperty("POM_SCM_DEV_CONNECTION") as String
 
-//val repositoryUsername = project.findProperty("mavenCentralUsername") as? String ?: ""
-//val repositoryPassword = project.findProperty("mavenCentralPassword") as? String ?: ""
+val repositoryUsername = project.findProperty("mavenCentralUsername") as? String ?: ""
+val repositoryPassword = project.findProperty("mavenCentralPassword") as? String ?: ""
 
-val repositoryUsername = System.getenv("OSS_USERNAME")
-val repositoryPassword = System.getenv("OSS_PASSWORD")
+//val repositoryUsername = System.getenv("OSS_USERNAME")
+//val repositoryPassword = System.getenv("OSS_PASSWORD")
 
 publishing {
     publications {
@@ -81,10 +81,10 @@ publishing {
 }
 
 signing {
-    useInMemoryPgpKeys(
-        System.getenv("OSS_SIGNING_KEY_ID"),
-        System.getenv("OSS_SIGNING_KEY"),
-        System.getenv("OSS_SIGNING_PASSWORD"),
-    )
+//    useInMemoryPgpKeys(
+//        System.getenv("OSS_SIGNING_KEY_ID"),
+//        System.getenv("OSS_SIGNING_KEY"),
+//        System.getenv("OSS_SIGNING_PASSWORD"),
+//    )
     sign(publishing.publications["release"])
 }

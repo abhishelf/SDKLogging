@@ -16,7 +16,6 @@ jobs:
       - name: Initialize
         run: |
           echo "First Sample Workflow Started"
-          sleep 60
       - name: Enable Second workflow
         run: |
           gh workflow enable second_workflow

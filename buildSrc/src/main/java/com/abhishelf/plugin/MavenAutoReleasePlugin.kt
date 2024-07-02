@@ -39,11 +39,21 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
             group = "publishing"
             dependsOn(project.tasks.named("publish"))
             doLast {
+                println("-------- START --------")
+                println(project.providers.gradleProperty("mavenCentralUsername"))
+                println(project.providers.gradleProperty("mavenCentralPassword"))
+                println(project.providers.gradleProperty("signingInMemoryKey"))
+                println(project.providers.gradleProperty("signingInMemoryKeyId"))
+                println(project.providers.gradleProperty("signingInMemoryKeyPassword"))
+
+                println("-------- CONTINUING --------")
+
                 userName = project.providers.gradleProperty("mavenCentralUsername").get()
                 userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
                 signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
                 signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
                 signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+                println("-------- END --------")
 
                 closeAndRelease()
             }

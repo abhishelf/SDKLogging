@@ -81,10 +81,10 @@ publishing {
 }
 
 signing {
-//    useInMemoryPgpKeys(
-//        System.getenv("OSS_SIGNING_KEY_ID"),
-//        System.getenv("OSS_SIGNING_KEY"),
-//        System.getenv("OSS_SIGNING_PASSWORD"),
-//    )
+    useInMemoryPgpKeys(
+        System.getenv("OSS_SIGNING_KEY_ID"),
+        System.getenv("OSS_SIGNING_KEY"),
+        System.getenv("OSS_SIGNING_PASSWORD"),
+    )
     sign(publishing.publications["release"])
 }

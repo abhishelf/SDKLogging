@@ -1,5 +1,6 @@
 package com.abhishelf.plugin
 
+import okhttp3.Credentials
 import okhttp3.OkHttpClient
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -9,16 +10,17 @@ import org.gradle.plugins.signing.SigningExtension
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-// type=released
-// type=closed
-// type=open
 open class MavenAutoReleasePlugin : Plugin<Project> {
 
-    private lateinit var password: String
+    private lateinit var userName: String
+    private lateinit var userPassword: String
+    private lateinit var signingKey: String
+    private lateinit var signingKeyId: String
+    private lateinit var signingPassword: String
 
     private val service by lazy {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(NexusOkHttpInterceptor(password))
+            .addInterceptor(NexusOkHttpInterceptor(Credentials.basic(userName, userPassword)))
             .build()
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -37,7 +39,12 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
             group = "publishing"
             dependsOn(project.tasks.named("publish"))
             doLast {
-                password = project.findProperty("publishingPassword") as String
+                userName = project.providers.gradleProperty("mavenCentralUsername").get()
+                userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
+                signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
+                signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
+                signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+
                 closeAndRelease()
             }
         }
@@ -93,9 +100,9 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
 
         project.extensions.configure(SigningExtension::class.java) {
             useInMemoryPgpKeys(
-                project.findProperty("signingInMemoryKey") as? String,
-                project.findProperty("signingInMemoryKeyId") as? String,
-                project.findProperty("signingInMemoryKeyPassword") as? String,
+                signingKeyId,
+                signingKey,
+                signingPassword,
             )
 
             sign(

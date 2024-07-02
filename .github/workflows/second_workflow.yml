@@ -3,7 +3,7 @@ name: second_workflow
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [ first_workflow ]
+    workflows: [ Release Plugins ]
     types: [ completed ]
   schedule:
     - cron: "*/6 * * * *"   # Every six minutes
@@ -15,7 +15,6 @@ jobs:
       - run: echo "Started"
   on-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,6 +25,17 @@ jobs:
       - name: Initialize
         run: |
           echo "Second Sample Workflow Started"
+      - name: Check status
+        run: |
+          echo "CODE=$(curl -s -o /dev/null -w "%{http_code}" https://repo.maven.apache.org/maven2/io/github/abhishelf/sdk-logger/0.0.7)" >> $GITHUB_ENV
+      - name: Disable Workflow
+        if: ${{ env.CODE == 200 }}
+        run: |
+          echo $CODE
+          gh workflow disable ${{ github.workflow }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   on-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}

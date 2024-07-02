@@ -14,6 +14,8 @@ jobs:
       - name: Enable Second workflow
         run: |
           gh workflow enable second_workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Completion
         run: |
           echo "First Sample Workflow Completed"

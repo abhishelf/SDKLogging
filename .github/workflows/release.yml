@@ -30,7 +30,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
         run: |
           cd sdk-logger
-          ./gradlew assemble --stacktrace
+          ../gradlew assemble --stacktrace
           ../gradlew autoPublishToMaven --stacktrace
       - name: Scheduling Next Release
         run: |

@@ -2,7 +2,7 @@ name: second_workflow
 
 on:
   schedule:
-    - cron: "*/2 * * * *"   # Every two minutes
+    - cron: "*/6 * * * *"   # Every two minutes
 
 jobs:
   initiate:

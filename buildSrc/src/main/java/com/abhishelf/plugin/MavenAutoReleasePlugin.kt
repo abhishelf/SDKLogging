@@ -12,15 +12,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 open class MavenAutoReleasePlugin : Plugin<Project> {
 
-    private lateinit var userName: String
-    private lateinit var userPassword: String
-    private lateinit var signingKey: String
+    private var userName: String? = null
+    private var userPassword: String? = null
+    private var signingKey: String? = null
     private var signingKeyId: String? = null
-    private lateinit var signingPassword: String
+    private var signingPassword: String? = null
 
     private val service by lazy {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(NexusOkHttpInterceptor(Credentials.basic(userName, userPassword)))
+            .addInterceptor(NexusOkHttpInterceptor(Credentials.basic(userName!!, userPassword!!)))
             .build()
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())

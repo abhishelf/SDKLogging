@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 
-internal class NexusOkHttpInterceptor() : Interceptor {
+internal class NexusOkHttpInterceptor(private val password: String) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val requestBuilder = chain.request().newBuilder()
@@ -12,7 +12,7 @@ internal class NexusOkHttpInterceptor() : Interceptor {
         requestBuilder.addHeader("Accept", "application/json")
         requestBuilder.addHeader(
             "Authorization",
-            "{HARD_CODED_TOKEN}"
+            password
         )
 
         return chain.proceed(requestBuilder.build())

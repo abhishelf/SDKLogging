@@ -9,15 +9,16 @@ import org.gradle.plugins.signing.SigningExtension
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
 // type=released
 // type=closed
 // type=open
 open class MavenAutoReleasePlugin : Plugin<Project> {
 
+    private lateinit var password: String
+
     private val service by lazy {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(NexusOkHttpInterceptor())
+            .addInterceptor(NexusOkHttpInterceptor(password))
             .build()
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -29,13 +30,14 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        print("MavenAutoReleasePlugin - will applying the plugin")
+
         configurePublish(project)
         project.tasks.register("autoPublishToMaven") {
             description = "Publishes repo it to MavenCentral"
             group = "publishing"
             dependsOn(project.tasks.named("publish"))
             doLast {
+                password = project.findProperty("publishingPassword") as String
                 closeAndRelease()
             }
         }
@@ -49,11 +51,11 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
             publications {
                 repositories {
                     maven {
-                        url = project.uri("file://Users/abhishek/Desktop/Temp/publish/staging/12345")
+                        url = project.uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                     }
                 }
 
-                register("release",  MavenPublication::class.java) {
+                register("release", MavenPublication::class.java) {
                     project.afterEvaluate {
                         from(project.components.getByName("release"))
                     }
@@ -68,21 +70,21 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
                         url.set(project.findProperty("POM_URL") as String?)
                         licenses {
                             license {
-                                name.set("The Apache License, Version 2.0")
-                                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                                name.set(project.findProperty("POM_LICENCE_NAME") as String?)
+                                url.set(project.findProperty("Add to standalone scripts") as String?)
                             }
                         }
                         developers {
                             developer {
-                                id.set("developerId")
-                                name.set("Developer Name")
-                                email.set("developer@example.com")
+                                id.set(project.findProperty("POM_DEVELOPER_ID") as String?)
+                                name.set(project.findProperty("POM_DEVELOPER_NAME") as String?)
+                                email.set(project.findProperty("POM_DEVELOPER_EMAIL") as String?)
                             }
                         }
                         scm {
-                            url.set("https://github.com/username/repository")
-                            connection.set("scm:git:git://github.com/username/repository.git")
-                            developerConnection.set("scm:git:ssh://github.com:username/repository.git")
+                            url.set(project.findProperty("POM_SCM_URL") as String?)
+                            connection.set(project.findProperty("POM_SCM_CONNECTION") as String?)
+                            developerConnection.set(project.findProperty("POM_SCM_DEV_CONNECTION") as String?)
                         }
                     }
                 }
@@ -90,7 +92,16 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
         }
 
         project.extensions.configure(SigningExtension::class.java) {
-            sign(project.extensions.getByType(PublishingExtension::class.java).publications.getByName("release"))
+            useInMemoryPgpKeys(
+                project.findProperty("signingInMemoryKey") as? String,
+                project.findProperty("signingInMemoryKeyId") as? String,
+                project.findProperty("signingInMemoryKeyPassword") as? String,
+            )
+
+            sign(
+                project.extensions.getByType(PublishingExtension::class.java)
+                    .publications.getByName("release")
+            )
         }
     }
 

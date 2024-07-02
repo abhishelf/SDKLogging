@@ -15,7 +15,7 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
     private lateinit var userName: String
     private lateinit var userPassword: String
     private lateinit var signingKey: String
-    private lateinit var signingKeyId: String
+    private var signingKeyId: String? = null
     private lateinit var signingPassword: String
 
     private val service by lazy {
@@ -52,7 +52,8 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
                 userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
                 signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
                 signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
-                signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+                signingPassword =
+                    project.providers.gradleProperty("signingInMemoryKeyPassword").get()
                 println("-------- END --------")
 
                 closeAndRelease()
@@ -68,7 +69,8 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
             publications {
                 repositories {
                     maven {
-                        url = project.uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        url =
+                            project.uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                     }
                 }
 

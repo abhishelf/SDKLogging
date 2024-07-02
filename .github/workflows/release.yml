@@ -36,7 +36,7 @@ jobs:
         run: |
           ./gradlew assemble --stacktrace
           cd sdk-logger
-          ../gradlew publish -PVERSION_NAME=${{ inputs.sdk-logger }}
+          ../gradlew autoPublishToMaven -PVERSION_NAME=${{ inputs.sdk-logger }}
       - name: Scheduling Next Release
         run: |
           gh workflow enable second_workflow

@@ -133,35 +133,58 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
 
     private fun moveToNextStep() {
         println("Moving to next step")
+        if (pendingItems.isEmpty()) {
+            println("Released all the plugins")
+            return
+        }
         for (repo in pendingItems) {
             if (repo.transitioning) continue
             else {
-                if (repo.type == "open") {
-                    println("Closing ${repo.repositoryId}")
-                    val response =
-                        service.finish(
-                            TransitionRepositoryInput(
-                                TransitionRepositoryInputData(
-                                    repo.repositoryId,
-                                    repo.repositoryId
+                when (repo.type) {
+                    "open" -> {
+                        println("Closing ${repo.repositoryId}")
+                        val response =
+                            service.finish(
+                                TransitionRepositoryInput(
+                                    TransitionRepositoryInputData(
+                                        repo.repositoryId,
+                                        repo.repositoryId
+                                    )
                                 )
-                            )
-                        ).execute()
-                    println(response.code())
-                    println(response)
-                } else {
-                    println("Promoting ${repo.repositoryId}")
-                    val response =
-                        service.promote(
-                            TransitionRepositoryInput(
-                                TransitionRepositoryInputData(
-                                    repo.repositoryId,
-                                    repo.repositoryId
+                            ).execute()
+                        println(response.code())
+                        println(response)
+                    }
+
+                    "release" -> {
+                        println("Closing ${repo.repositoryId}")
+                        val response =
+                            service.drop(
+                                TransitionRepositoryInput(
+                                    TransitionRepositoryInputData(
+                                        repo.repositoryId,
+                                        repo.repositoryId
+                                    )
                                 )
-                            )
-                        ).execute()
-                    println(response.code())
-                    println(response)
+                            ).execute()
+                        println(response.code())
+                        println(response)
+                    }
+
+                    else -> {
+                        println("Promoting ${repo.repositoryId}")
+                        val response =
+                            service.promote(
+                                TransitionRepositoryInput(
+                                    TransitionRepositoryInputData(
+                                        repo.repositoryId,
+                                        repo.repositoryId
+                                    )
+                                )
+                            ).execute()
+                        println(response.code())
+                        println(response)
+                    }
                 }
             }
         }

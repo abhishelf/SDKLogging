@@ -16,6 +16,11 @@ internal interface NexusService {
         @Body input: TransitionRepositoryInput,
     ): Call<Unit>
 
+    @POST("profiles/13968d1425dd30/drop")
+    fun drop(
+        @Body input: TransitionRepositoryInput,
+    ): Call<Unit>
+
     @POST("profiles/13968d1425dd30/promote")
     fun promote(
         @Body input: TransitionRepositoryInput,

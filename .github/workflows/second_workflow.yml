@@ -6,7 +6,7 @@ on:
     workflows: [ first_workflow ]
     types: [ completed ]
   schedule:
-    - cron: "* * * * *"   # Every minutes
+    - cron: "*/1 * * * *"   # Every minutes
 
 jobs:
   on-success:

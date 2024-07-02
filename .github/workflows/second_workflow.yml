@@ -1,8 +1,12 @@
 name: second_workflow
 
 on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ first_workflow ]
+    types: [ completed ]
   schedule:
-    - cron: "*/6 * * * *"   # Every two minutes
+    - cron: "*/6 * * * *"   # Every six minutes
 
 jobs:
   initiate:

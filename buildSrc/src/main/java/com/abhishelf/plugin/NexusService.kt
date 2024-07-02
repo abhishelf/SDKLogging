@@ -8,20 +8,20 @@ import retrofit2.http.Path
 
 internal interface NexusService {
 
-    @GET("profile_repositories/13968d1425dd30")
+    @GET("profile_repositories/{HARD_CODED_STAGING_PROFILE_ID}")
     fun getProfileRepository(): Call<ProfileRepositoriesResponse>
 
-    @POST("profiles/13968d1425dd30/finish")
+    @POST("profiles/{HARD_CODED_STAGING_PROFILE_ID}/finish")
     fun finish(
         @Body input: TransitionRepositoryInput,
     ): Call<Unit>
 
-    @POST("profiles/13968d1425dd30/drop")
+    @POST("profiles/{HARD_CODED_STAGING_PROFILE_ID}/drop")
     fun drop(
         @Body input: TransitionRepositoryInput,
     ): Call<Unit>
 
-    @POST("profiles/13968d1425dd30/promote")
+    @POST("profiles/{HARD_CODED_STAGING_PROFILE_ID}/promote")
     fun promote(
         @Body input: TransitionRepositoryInput,
     ): Call<Unit>

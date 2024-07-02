@@ -12,15 +12,15 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 open class MavenAutoReleasePlugin : Plugin<Project> {
 
-    private var userName: String? = null
-    private var userPassword: String? = null
-    private var signingKey: String? = null
-    private var signingKeyId: String? = null
-    private var signingPassword: String? = null
+    private lateinit var userName: String
+    private lateinit var userPassword: String
+    private lateinit var signingKey: String
+    private lateinit var signingKeyId: String
+    private lateinit var signingPassword: String
 
     private val service by lazy {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(NexusOkHttpInterceptor(Credentials.basic(userName!!, userPassword!!)))
+            .addInterceptor(NexusOkHttpInterceptor(Credentials.basic(userName, userPassword)))
             .build()
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -33,29 +33,18 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
+        userName = project.providers.gradleProperty("mavenCentralUsername").get()
+        userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
+        signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
+        signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
+        signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+
         configurePublish(project)
         project.tasks.register("autoPublishToMaven") {
             description = "Publishes repo it to MavenCentral"
             group = "publishing"
             dependsOn(project.tasks.named("publish"))
             doLast {
-                println("-------- START --------")
-                println(project.providers.gradleProperty("mavenCentralUsername"))
-                println(project.providers.gradleProperty("mavenCentralPassword"))
-                println(project.providers.gradleProperty("signingInMemoryKey"))
-                println(project.providers.gradleProperty("signingInMemoryKeyId"))
-                println(project.providers.gradleProperty("signingInMemoryKeyPassword"))
-
-                println("-------- CONTINUING --------")
-
-                userName = project.providers.gradleProperty("mavenCentralUsername").get()
-                userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
-                signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
-                signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
-                signingPassword =
-                    project.providers.gradleProperty("signingInMemoryKeyPassword").get()
-                println("-------- END --------")
-
                 closeAndRelease()
             }
         }
@@ -69,8 +58,11 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
             publications {
                 repositories {
                     maven {
-                        url =
-                            project.uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+                        credentials {
+                            username = userName
+                            password = userPassword
+                        }
+                        url = project.uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
                     }
                 }
 

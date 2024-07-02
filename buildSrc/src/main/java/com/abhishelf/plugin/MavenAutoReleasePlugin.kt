@@ -156,7 +156,7 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
                         println(response)
                     }
 
-                    "release" -> {
+                    "released" -> {
                         println("Closing ${repo.repositoryId}")
                         val response =
                             service.drop(

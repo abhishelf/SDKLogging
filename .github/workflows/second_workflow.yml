@@ -1,0 +1,26 @@
+name: second_workflow
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [ first_workflow ]
+    types: [ completed ]
+  schedule:
+    - cron: "*/2 * * * *"   # Every two minutes
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Initialize
+        run: |
+          echo "Second Sample Workflow Started"
+      - name: Disable Workflow
+        run: |
+          gh workflow disable ${{ github.workflow }}
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'

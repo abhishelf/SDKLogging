@@ -1,0 +1,19 @@
+name: first_workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Initialize
+        run: |
+          echo "First Sample Workflow Started"
+          sleep 180
+      - name: Enable Second workflow
+        run: |
+          gh workflow enable second_workflow
+      - name: Completion
+        run: |
+          echo "First Sample Workflow Completed"

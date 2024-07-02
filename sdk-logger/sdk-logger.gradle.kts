@@ -2,7 +2,6 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinAndroid)
-    id("mvn-publish")
     id("com.abhishelf.plugin")
 }
 

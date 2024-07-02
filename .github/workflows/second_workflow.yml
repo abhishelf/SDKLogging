@@ -6,13 +6,19 @@ on:
     workflows: [ first_workflow ]
     types: [ completed ]
   schedule:
-    - cron: "*/2 * * * *"   # Every two minutes
+    - cron: "* * * * *"   # Every minutes
 
 jobs:
   on-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
       - name: Initialize
         run: |
           echo "Second Sample Workflow Started"

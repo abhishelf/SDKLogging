@@ -7,10 +7,16 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Configure git
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
       - name: Initialize
         run: |
           echo "First Sample Workflow Started"
-          sleep 180
+          sleep 60
       - name: Enable Second workflow
         run: |
           gh workflow enable second_workflow

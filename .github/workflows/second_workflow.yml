@@ -2,10 +2,17 @@ name: second_workflow
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows: [ first_workflow ]
+    types: [ completed ]
   schedule:
     - cron: "*/2 * * * *"   # Every two minutes
 
 jobs:
+  initiate:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Started"
   on-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}

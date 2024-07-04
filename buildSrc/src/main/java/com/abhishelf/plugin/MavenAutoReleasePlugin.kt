@@ -33,20 +33,21 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
-        userName = project.providers.gradleProperty("mavenCentralUsername").get()
-        userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
-        signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
-        signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
-        signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+        println("::debug::Debug Text")
+        println("::notice::Notice Text")
+        println("::warning::Warning Text")
+        println("::error::Error Text")
 
-        configurePublish(project)
+//        userName = project.providers.gradleProperty("mavenCentralUsername").get()
+//        userPassword = project.providers.gradleProperty("mavenCentralPassword").get()
+//        signingKey = project.providers.gradleProperty("signingInMemoryKey").get()
+//        signingKeyId = project.providers.gradleProperty("signingInMemoryKeyId").get()
+//        signingPassword = project.providers.gradleProperty("signingInMemoryKeyPassword").get()
+//
+//        configurePublish(project)
         project.tasks.register("autoPublishToMaven") {
             description = "Publishes repo it to MavenCentral"
             group = "publishing"
-            dependsOn(project.tasks.named("publish"))
-            doLast {
-                closeAndRelease()
-            }
         }
     }
 
@@ -103,11 +104,11 @@ open class MavenAutoReleasePlugin : Plugin<Project> {
         }
 
         project.extensions.configure(SigningExtension::class.java) {
-            useInMemoryPgpKeys(
-                signingKeyId,
-                signingKey,
-                signingPassword,
-            )
+//            useInMemoryPgpKeys(
+//                signingKeyId,
+//                signingKey,
+//                signingPassword,
+//            )
 
             sign(
                 project.extensions.getByType(PublishingExtension::class.java)

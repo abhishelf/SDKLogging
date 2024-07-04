@@ -32,6 +32,7 @@ jobs:
           cd sdk-logger
           ../gradlew assemble --stacktrace
           ../gradlew autoPublishToMaven --stacktrace
+          echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
       - name: Scheduling Next Release
         run: |
           gh workflow enable second_workflow

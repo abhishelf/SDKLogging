@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.abhishelf.loggersdk"
+    namespace = "com.abhishelf.secondmodule"
     compileSdk = 34
 
     defaultConfig {
@@ -35,10 +35,7 @@ android {
 }
 
 dependencies {
-
-//    implementation(projects.secondModule)
-//    implementation("io.github.abhishelf:sample-module:1.0.0")
-
+    implementation("io.github.abhishek:random-module:1.0.0")
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

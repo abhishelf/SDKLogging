@@ -5,6 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -15,7 +17,8 @@ dependencyResolutionManagement {
 
 include(
     ":app",
-    ":sdk-logger"
+    ":sdk-logger",
+    ":second-module"
 )
 rootProject.name = "SDKLogging"
 

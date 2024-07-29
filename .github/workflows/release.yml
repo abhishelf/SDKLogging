@@ -11,6 +11,11 @@ on:
         type: boolean
         required: true
         default: false
+      release_branch:
+        type: string
+        description: Enter the branch to be release
+        default: "release"
+        required: true  
 
 jobs:
   release:
